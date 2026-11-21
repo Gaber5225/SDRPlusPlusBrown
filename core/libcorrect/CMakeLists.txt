@@ -88,7 +88,6 @@ endif()
 
 add_subdirectory(util)
 add_subdirectory(tests)
-add_subdirectory(tools)
 # add_subdirectory(benchmarks)
 
 # install(TARGETS correct correct_static
