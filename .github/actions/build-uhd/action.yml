@@ -38,6 +38,7 @@ runs:
         $py = "${{ inputs.python-executable }}"
         if (Test-Path $py) {
           Write-Host "Using cached Python 3.11 at $py"
+          & $py -m pip install --quiet mako requests
           & $py -c "import mako, requests; print('mako + requests available')"
         } else {
           python -m pip install mako requests
