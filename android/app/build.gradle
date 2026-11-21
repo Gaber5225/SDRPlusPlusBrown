@@ -32,12 +32,6 @@ android {
     }
 
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            keyAlias "androiddebugkey"
-            storePassword 'android'
-            keyPassword 'android'
-        }
         release {
             storeFile file('/home/san/Fun/SDRPlusPlus/my-release-key.keystore')
             storePassword 'android'
