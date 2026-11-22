@@ -53,8 +53,9 @@ namespace thememenu {
         }
         core::configManager.release();
 
-        // Load saved style if exists
-        loadStyle();
+        // Apply the selected theme. This fully rebuilds colors from the theme
+        // JSON, so a stale imgui_style_v1.bin can never leave the UI black.
+        applyTheme();
 
         // Apply scaling
         ImGui::GetStyle().ScaleAllSizes(style::uiScale);
