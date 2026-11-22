@@ -2,7 +2,6 @@ $build_dir=$args[0]
 $root_dir=$args[1]
 
 mkdir sdrpp_windows_x64
-mkdir sdrpp_windows_x64/modules
 
 $RELDIR="RelWithDebInfo"
 
