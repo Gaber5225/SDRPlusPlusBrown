@@ -39,8 +39,12 @@ namespace style {
         // Latin Extended-A, needed for Central European device and file names
         static const ImWchar latinExtA[] = { 0x0100, 0x017F, 0 };
         baseBuilder.AddRanges(latinExtA);
-        // CJK support: Chinese (Simplified + Traditional), Japanese, Korean
-        baseBuilder.AddRanges(fonts->GetGlyphRangesChineseFull());
+        // CJK support: common Simplified Chinese characters only.
+        // NOTE: do NOT use GetGlyphRangesChineseFull() here — it adds ~25000
+        // glyphs which, multiplied across 3 font sizes, overflows the ImGui
+        // font atlas texture (GPU limit), causing every glyph to render as a
+        // black box.
+        baseBuilder.AddRanges(fonts->GetGlyphRangesChineseSimplifiedCommon());
         baseBuilder.BuildRanges(&baseRanges);
 
         // Create big font range
@@ -114,3 +118,4 @@ namespace ImGui {
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
     }
 }
+
