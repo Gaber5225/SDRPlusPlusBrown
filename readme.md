@@ -1,3 +1,5 @@
+#DE BG9JXB，我跟workbuddy苦苦求了三天，AI菩萨终于给我赐下了汉化版的SDR++brown，顺带修复了原版的一点bug，欢迎各位使用，73！
+
 # SDR++Brown (fork), is not the original bloat-free SDR software
 
 
