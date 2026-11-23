@@ -69,7 +69,14 @@ namespace style {
         hugeBuilder.BuildRanges(&hugeRanges);
         
         // Add bigger fonts for frequency select and title
+#ifdef __ANDROID__
+        // Android uiScale is 3.0x (16px -> 48px), so loading the full CJK
+        // range here overflows the font atlas texture (black boxes). Keep the
+        // common Simplified range on Android; full CJK is used on desktop.
+        baseFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 16.0f * uiScale, NULL, baseRanges.Data);
+#else
         baseFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 16.0f * uiScale, NULL, fullRanges.Data);
+#endif
         mediumFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 25.0f * uiScale, NULL, baseRanges.Data);
         bigFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 45.0f * uiScale, NULL, bigRanges.Data);
         hugeFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 128.0f * uiScale, NULL, hugeRanges.Data);
@@ -126,5 +133,6 @@ namespace ImGui {
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
     }
 }
+
 
 
