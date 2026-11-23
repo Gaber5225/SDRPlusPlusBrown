@@ -16,6 +16,7 @@ namespace style {
     ImFont* mediumFont;
     ImFont* hugeFont;
     ImVector<ImWchar> baseRanges;
+    ImVector<ImWchar> fullRanges;
     ImVector<ImWchar> bigRanges;
     ImVector<ImWchar> hugeRanges;
 
@@ -39,13 +40,20 @@ namespace style {
         // Latin Extended-A, needed for Central European device and file names
         static const ImWchar latinExtA[] = { 0x0100, 0x017F, 0 };
         baseBuilder.AddRanges(latinExtA);
-        // CJK support: common Simplified Chinese characters only.
-        // NOTE: do NOT use GetGlyphRangesChineseFull() here — it adds ~25000
-        // glyphs which, multiplied across 3 font sizes, overflows the ImGui
-        // font atlas texture (GPU limit), causing every glyph to render as a
-        // black box.
+        // CJK support: common Simplified Chinese characters for medium/tiny
+        // fonts (kept small so the atlas does not overflow).
         baseBuilder.AddRanges(fonts->GetGlyphRangesChineseSimplifiedCommon());
         baseBuilder.BuildRanges(&baseRanges);
+
+        // Full CJK range for the main (base) font only. This covers all CJK
+        // characters so no glyph shows as '?'. It is loaded on a single font
+        // size (16px) to keep the atlas within the GPU texture limit.
+        ImFontGlyphRangesBuilder fullBuilder;
+        fullBuilder.AddRanges(fonts->GetGlyphRangesDefault());
+        fullBuilder.AddRanges(fonts->GetGlyphRangesCyrillic());
+        fullBuilder.AddRanges(latinExtA);
+        fullBuilder.AddRanges(fonts->GetGlyphRangesChineseFull());
+        fullBuilder.BuildRanges(&fullRanges);
 
         // Create big font range
         ImFontGlyphRangesBuilder bigBuilder;
@@ -61,7 +69,7 @@ namespace style {
         hugeBuilder.BuildRanges(&hugeRanges);
         
         // Add bigger fonts for frequency select and title
-        baseFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 16.0f * uiScale, NULL, baseRanges.Data);
+        baseFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 16.0f * uiScale, NULL, fullRanges.Data);
         mediumFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 25.0f * uiScale, NULL, baseRanges.Data);
         bigFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 45.0f * uiScale, NULL, bigRanges.Data);
         hugeFont = fonts->AddFontFromFileTTF(((std::string)(resDir + "/fonts/NotoSansSC-Regular.ttf")).c_str(), 128.0f * uiScale, NULL, hugeRanges.Data);
@@ -118,4 +126,5 @@ namespace ImGui {
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
     }
 }
+
 
