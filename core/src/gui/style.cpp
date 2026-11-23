@@ -43,6 +43,10 @@ namespace style {
         // CJK support: common Simplified Chinese characters for medium/tiny
         // fonts (kept small so the atlas does not overflow).
         baseBuilder.AddRanges(fonts->GetGlyphRangesChineseSimplifiedCommon());
+        // Add CJK characters used by the SDR++ Chinese UI but missing from
+        // ImGui's SimplifiedCommon table, so they don't render as '?'.
+        // Characters: 函嘶噪屏帧拟瀑糙纬聆谐钮阈频 (UTF-8, ASCII-escaped).
+        baseBuilder.AddText("\xe5\x87\xbd\xe5\x98\xb6\xe5\x99\xaa\xe5\xb1\x8f\xe5\xb8\xa7\xe6\x8b\x9f\xe7\x80\x91\xe7\xb3\x99\xe7\xba\xac\xe8\x81\x86\xe8\xb0\x90\xe9\x92\xae\xe9\x98\x88\xe9\xa2\x91");
         baseBuilder.BuildRanges(&baseRanges);
 
         // Full CJK range for the main (base) font only. This covers all CJK
@@ -133,6 +137,7 @@ namespace ImGui {
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
     }
 }
+
 
 
 
